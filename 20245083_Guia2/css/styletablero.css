@@ -1,0 +1,35 @@
+body {
+    background: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+#tablero {
+    width: 400px;
+    height: 400px;
+    margin: 20px auto;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #333;
+}
+
+/* Filas */
+#tablero div {
+    display: flex;
+    flex: 1;
+}
+
+/* Celdas */
+#tablero div p {
+    flex: 1;
+    margin: 0;
+    background: black;
+}
+
+.filaImpar p:nth-child(odd) {
+    background: white;
+}
+
+.filaPar p:nth-child(even) {
+    background: white;
+}
