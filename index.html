@@ -1,17 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
-    <title>Guías</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guías de Desarrollo Web - Kathleen Argueta</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 800px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .guides-list {
+            list-style: none;
+            margin: 25px 0;
+        }
+
+        .guide-item {
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+
+        .guide-item:hover {
+            transform: translateX(5px);
+        }
+
+        .guide-link {
+            display: block;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .guide-link:hover {
+            background-color: #e8f4fc;
+            border-left-color: #2980b9;
+        }
+
+        .guide-link::after {
+            content: "→";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #3498db;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .guide-link:hover::after {
+            transform: translate(5px, -50%);
+        }
+
+        .status {
+            font-size: 0.85rem;
+            color: #95a5a6;
+            margin-top: 5px;
+            display: block;
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .guide-link {
+                padding: 12px 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Guías de Desarrollo Web - Kathleen Argueta</h1>
-    <ul>
-        <li><a href="20245083_Guia1/">Guía 1</a></li>
-        <li><a href="20245083_Guia2/">Guía 2</a></li>
-        <li><a href="20245083_Guia3/">Guía 3</a></li>
-    </ul>
+    <div class="container">
+        <header>
+            <h1>Guías de Desarrollo Web</h1>
+            <p class="subtitle">Kathleen Argueta - GitHub Pages</p>
+        </header>
+
+        <ul class="guides-list">
+            <li class="guide-item">
+                <a href="20245083_Guia1/" class="guide-link">Guía 1</a>
+            </li>
+            <li class="guide-item">
+                <a href="20245083_Guia2/" class="guide-link">Guía 2</a>
+            </li>
+            <li class="guide-item">
+                <a href="20245083_Guia3/" class="guide-link">Guía 3</a>
+            </li>
+        </ul>
+
+        <footer>
+            <p>© 2023 Kathleen Argueta - Todos los derechos reservados</p>
+        </footer>
+    </div>
 </body>
 
 </html>
