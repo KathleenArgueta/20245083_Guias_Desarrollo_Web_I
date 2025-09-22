@@ -1,0 +1,123 @@
+@import url(https://fonts.googleapis.com/css?family=Muli);
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Muli', sans-serif;
+    text-align: justify;
+}
+
+header {
+    background: #16A085;
+    height: 130px;
+    overflow: hidden;
+}
+
+footer {
+    margin-top: 20px;
+    background: #16A085;
+    height: 50px;
+}
+
+header div,
+footer div {
+    width: 80%;
+    margin: 0 auto;
+    color: white;
+}
+
+h1 {
+    font-size: 2, 3rem;
+    margin-bottom: 1rem;
+    padding-top: 0.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+section {
+    margin-top: 150px;
+    margin-bottom: 90px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+section article {
+    font-size: 0.9rem;
+    height: 340px;
+    width: 32.33%;
+    border: 2px dashed #16A085;
+    padding: 1%;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex: 1 1 30%;
+    margin: 0.5%;
+}
+
+section article img {
+    height: 180px;
+    max-width: 80%;
+    margin: 5px auto;
+    display: block;
+}
+
+h3 {
+    text-align: center;
+}
+
+footer div {
+    padding-top: 1rem;
+
+}
+
+section article:nth-child(2) {
+    background-color: rgba(70, 130, 180, 0.9);
+    position:
+        /*relative;*/
+        /*absolute;*/
+        static;
+    left: 100px;
+    top: 50px;
+    /*visibility: hidden;*/
+    /*display: none;*/
+}
+
+/*El este caso, se movio hacia abajo y hacia la derecha (contrario a lo que mi pensamiento intuía
+porque pensé que era literal xD, pero ya entendi que si usamos posición relative
+con valores positivos se mueve hacia el lado contario (osea, cuanto respecto de la derecha y de hacia arriba se mueve la imagen en su sección)
+Además, laos demás articulos no ocupan su espacio porque queda "reservado". Totalmente contrario a lo que pasa con absolute */
+
+/*Con visibility: hidden practicamente se esconde, su posición y espacio sigue ahi
+solo que se oculta la imagen y el articulo. Sin embargo, con
+display:none simplemente se elimina, desaparece y fue uno de 
+los amigos que hicimos en el camino*/
+
+/*Ejercicio 2: */
+
+header,
+footer {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    z-index: 1000;
+    text-align: center;
+    padding: 15px 0;
+}
+
+header {
+    top: 0;
+}
+
+footer {
+    bottom: 0;
+}
