@@ -1,85 +1,118 @@
 document.addEventListener("DOMContentLoaded", function () {
-    //Accedemos al contenedor donde se mostrara los estudiantes
-    const containerEstudiantes = document.querySelector(
-        "#idContainerEstudiantes"
-    );
-
-    //Accedemos a cada boton por medio de la API DOM
+    const containerEstudiantes = document.querySelector("#idContainerEstudiantes");
     const btnAddEstudiante = document.querySelector("#idBtnAgregarEstudiante");
     const btnViewEstudiantes = document.querySelector("#idBtnMostrarEstudiantes");
 
-    //Agregamos el evento click a los botones, adicionalmente
-    //se le asigna la funcion que realizará la operación
     btnAddEstudiante.addEventListener("click", addEstudiantes);
     btnViewEstudiantes.addEventListener("click", viewEstudiantes);
 
-    // Arreglo de forma global
     let arrayEstudiantes = new Array();
 
-    //Creando funciones
-    function addEstudiantes() {
-        const inputCarnet = document
-            .querySelector("#inputCarnet")
-            .value.toString()
-            .toUpperCase();
-        const inputNombre = document
-            .querySelector("#inputNombre")
-            .value.toString()
-            .toUpperCase();
-        const inputApellidos = document
-            .querySelector("#inputApellidos")
-            .value.toString()
-            .toUpperCase();
+    const regexCarnet = /^[A-Z]{2}\d{3}$/;
+    const regexNombre = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ\s]+$/;
+    const regexDUI = /^\d{8}-\d{1}$/;
+    const regexNIT = /^\d{4}-\d{6}-\d{3}-\d{1}$/;
+    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const regexEdad = /^\d+$/;
 
-        if (inputCarnet != "" && inputNombre != "" && inputApellidos != "") {
-            arrayEstudiantes.push(
-                new Array(inputCarnet, inputNombre, inputApellidos)
-            );
-            alert("Se registro el nuevo estudiante");
-            //Limpiando campos del formulario
-            document.querySelector("#inputCarnet").value = "";
-            document.querySelector("#inputNombre").value = "";
-            document.querySelector("#inputApellidos").value = "";
-            document.querySelector("#inputCarnet").focus();
-        } else {
-            alert("Faltan campos que completar");
+    function addEstudiantes() {
+        const carnet = document.querySelector("#inputCarnet").value.trim().toUpperCase();
+        const nombre = document.querySelector("#inputNombre").value.trim().toUpperCase();
+        const apellidos = document.querySelector("#inputApellidos").value.trim().toUpperCase();
+        const dui = document.querySelector("#inputDUI").value.trim();
+        const nit = document.querySelector("#inputNIT").value.trim();
+        const fechaNac = document.querySelector("#inputFechaNac").value;
+        const correo = document.querySelector("#inputCorreo").value.trim();
+        const edad = document.querySelector("#inputEdad").value.trim();
+
+        if (!regexCarnet.test(carnet)) {
+            alert("Error en CARNET. Formato requerido: 2 letras y 3 números (Ej: AB001)");
+            return;
         }
+
+        if (!regexNombre.test(nombre)) {
+            alert("Error en NOMBRE. Solo se permiten letras.");
+            return;
+        }
+
+        if (!regexNombre.test(apellidos)) {
+            alert("Error en APELLIDOS. Solo se permiten letras.");
+            return;
+        }
+
+        if (!regexDUI.test(dui)) {
+            alert("Error en DUI. Formato requerido: ########-#");
+            return;
+        }
+
+        if (!regexNIT.test(nit)) {
+            alert("Error en NIT. Formato requerido: ####-######-###-#");
+            return;
+        }
+
+        if (fechaNac === "") {
+            alert("Error. Debe seleccionar una FECHA DE NACIMIENTO.");
+            return;
+        }
+
+        if (!regexCorreo.test(correo)) {
+            alert("Error en CORREO. Ingrese un correo válido.");
+            return;
+        }
+
+        if (!regexEdad.test(edad)) {
+            alert("Error en EDAD. Ingrese solo números.");
+            return;
+        }
+
+        arrayEstudiantes.push(
+            new Array(carnet, nombre, apellidos, dui, nit, fechaNac, correo, edad)
+        );
+
+        alert("Se registró el nuevo estudiante correctamente");
+
+        document.querySelector("form").reset();
+        document.querySelector("#inputCarnet").focus();
     }
+
     function viewEstudiantes() {
-        //Validando que existan estudiantes registrados
         let totalEstudiantes = arrayEstudiantes.length;
+
         if (totalEstudiantes > 0) {
-            let carnet;
-            let nombres;
-            let apellidos;
-            let table = "<table class='table table-light table-striped'>";
+            let table = "<div class='table-responsive'><table class='table table-light table-striped'>";
             table += "<thead>";
             table += "<tr>";
-            table += "<th scope='col' style='width: 5%;'>#</th>";
-            table += "<th scope='col' style='width: 15%;'>Carnet</th>";
-            table += "<th scope='col'>Nombres</th>";
-            table += "<th scope='col'>Apellidos</th>";
+            table += "<th>#</th>";
+            table += "<th>Carnet</th>";
+            table += "<th>Nombres</th>";
+            table += "<th>Apellidos</th>";
+            table += "<th>DUI</th>";
+            table += "<th>NIT</th>";
+            table += "<th>Fecha Nac.</th>";
+            table += "<th>Correo</th>";
+            table += "<th>Edad</th>";
             table += "</tr>";
             table += "</thead>";
             table += "<tbody>";
 
-            // Utilizaremos un bucle for para recorrer el arreglo de estudiantes
             for (let i = 0; i < arrayEstudiantes.length; i++) {
-                //Accediendo a las posiciones del arreglo
-                carnet = arrayEstudiantes[i][0];
-                nombres = arrayEstudiantes[i][1];
-                apellidos = arrayEstudiantes[i][2];
+                let estudiante = arrayEstudiantes[i];
 
                 table += `<tr>`;
-                table += `<td scope='row' style='font-weight: bold;'>${i + 1}</td>`;
-                table += `<td>${carnet}</td>`;
-                table += `<td>${nombres}</td>`;
-                table += `<td>${apellidos}</td>`;
+                table += `<td class='fw-bold text-center'>${i + 1}</td>`;
+                table += `<td>${estudiante[0]}</td>`;
+                table += `<td>${estudiante[1]}</td>`;
+                table += `<td>${estudiante[2]}</td>`;
+                table += `<td>${estudiante[3]}</td>`;
+                table += `<td>${estudiante[4]}</td>`;
+                table += `<td>${estudiante[5]}</td>`;
+                table += `<td>${estudiante[6]}</td>`;
+                table += `<td>${estudiante[7]}</td>`;
                 table += `</tr>`;
             }
 
             table += "</tbody>";
-            table += "</table>";
+            table += "</table></div>";
             containerEstudiantes.innerHTML = table;
         } else {
             alert("No se han registrado estudiantes");
