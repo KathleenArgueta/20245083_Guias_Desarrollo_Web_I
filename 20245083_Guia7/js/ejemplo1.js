@@ -1,10 +1,10 @@
-// ACCEDIENDO A LA REFERENCIA DEL FORMULARIO QUE
-// TENDRA LOS NUEVOS ELEMENTOS
+// ACCEDIENDO A LA REFERENCIA DEL FORMULARIO QUE TENDRA LOS NUEVOS ELEMENTOS
 const newForm = document.getElementById("idNewForm");
 
 // ACCEDIENDO A LA REFERENCIA DE BOTONES
 const buttonCrear = document.getElementById("idBtnCrear");
-const buttonAddElemento = document.getElementById("idBtnAddElemento");
+const buttonAddElemento = document.getElementById("idBtnAddElement");
+const buttonValidar = document.getElementById("idBtnValidar"); // Nuevo botón
 
 // ACCEDIENDO AL VALOR DEL SELECT PARA DETERMINAR EL TIPO DE ELEMENTO A CREAR
 const cmbElemento = document.getElementById("idCmbElemento");
@@ -15,12 +15,11 @@ const nombreElemento = document.getElementById("idNombreElemento");
 
 // CREANDO MODAL CON BOOTSTRAP
 const modal = new bootstrap.Modal(document.getElementById("idModal"), {});
+
 // AGREGANDO FUNCIONES
 const vericarTipoElemento = function () {
     let elemento = cmbElemento.value;
-    //validando que se haya seleccionado un elemento
     if (elemento != "") {
-        // Metodo perteneciente al modal de boostrap
         modal.show();
     } else {
         alert("Debe seleccionar el elemento que se creara");
@@ -28,13 +27,10 @@ const vericarTipoElemento = function () {
 };
 
 const newSelect = function () {
-    // Creando elementos
     let addElemento = document.createElement("select");
-    //creando atributos para el nueveo elemento
     addElemento.setAttribute("id", `id${nombreElemento.value}`);
     addElemento.setAttribute("class", "form-select");
 
-    //creando option para el select
     for (let i = 1; i <= 10; i++) {
         let addOption = document.createElement("option");
         addOption.value = i;
@@ -42,116 +38,83 @@ const newSelect = function () {
         addElemento.appendChild(addOption);
     }
 
-    //creando label para el nuevo control
     let labelElemento = document.createElement("label");
     labelElemento.setAttribute("for", `id${nombreElemento.value}`);
-    //creando texto para label
     labelElemento.textContent = tituloElemento.value;
 
-    //Creando label de id
     let labelId = document.createElement("span");
     labelId.textContent = `ID de control : ${nombreElemento.value}`;
 
-    // Creando plantilla de bootstrap para visualizar el nuevo elemento
     let divElemento = document.createElement("div");
-    // Agregando atributos
     divElemento.setAttribute("class", "form-floating");
 
-    //Creando el input que sera hijo del div
     divElemento.appendChild(addElemento);
-    //Creando el label que sera hijo del div
     divElemento.appendChild(labelElemento);
 
-    //Creando el SPAN que sera hijo del nuevo Formulario
     newForm.appendChild(labelId);
-
-    //Creando el Div que sera hijo del nuevo Formulario
     newForm.appendChild(divElemento);
 };
+
 const newRadioCheckbox = function (newElemento) {
-    // Creando elementos
     let addElemento = document.createElement("input");
-    //creando atributos para el nueveo elemento
     addElemento.setAttribute("id", `id${nombreElemento.value}`);
     addElemento.setAttribute("type", newElemento);
     addElemento.setAttribute("class", "form-check-input");
 
-    //creando label para el nuevo control
     let labelElemento = document.createElement("label");
     labelElemento.setAttribute("class", "form-check-label");
     labelElemento.setAttribute("for", `id${nombreElemento.value}`);
-    //creando texto para label
     labelElemento.textContent = tituloElemento.value;
 
-    //Creando label de id
     let labelId = document.createElement("span");
     labelId.textContent = `ID de control : ${nombreElemento.value}`;
 
-    // Creando plantilla de bootstrap para visualizar el nuevo elemento
     let divElemento = document.createElement("div");
-    // Agregando atributos
     divElemento.setAttribute("class", "form-check");
 
-    //Creando el input que sera hijo del div
     divElemento.appendChild(addElemento);
-    //Creando el label que sera hijo del div
     divElemento.appendChild(labelElemento);
 
-    //Creando el SPAN que sera hijo del nuevo Formulario
     newForm.appendChild(labelId);
-
-    //Creando el Div que sera hijo del nuevo Formulario
     newForm.appendChild(divElemento);
 };
 
 const newInput = function (newElemento) {
-    // Creando elementos de tipo = text, number, date y password
     let addElemento =
         newElemento == "textarea"
             ? document.createElement("textarea")
             : document.createElement("input");
 
-    //creando atributos para el nueveo elemento
     addElemento.setAttribute("id", `id${nombreElemento.value}`);
     addElemento.setAttribute("type", newElemento);
     addElemento.setAttribute("class", "form-control");
     addElemento.setAttribute("placeholder", tituloElemento.value);
+    if (newElemento === "color") {
+        addElemento.setAttribute("class", "form-control form-control-color");
+    }
 
-    //creando label para el nuevo control
     let labelElemento = document.createElement("label");
     labelElemento.setAttribute("for", `id${nombreElemento.value}`);
 
-    //creando icono para el label
     let iconLabel = document.createElement("i");
     iconLabel.setAttribute("class", "bi bi-tag");
 
-    //creando texto para label
     labelElemento.textContent = tituloElemento.value;
-
-    //creando el elemento i como hijo del label, afterbegin le
-    // indicamos que se creara entes de su primer hijo
     labelElemento.insertAdjacentElement("afterbegin", iconLabel);
 
-    //Creando label de id
     let labelId = document.createElement("span");
     labelId.textContent = `ID de control : ${nombreElemento.value}`;
 
-    // Creando plantilla de bootstrap para visualizar el nuevo elemento
     let divElemento = document.createElement("div");
-    // Agregando atributos
     divElemento.setAttribute("class", "form-floating mb-3");
 
-    //Creando el input que sera hijo del div
     divElemento.appendChild(addElemento);
-    //Creando el label que sera hijo del div
     divElemento.appendChild(labelElemento);
 
-    //Creando el SPAN que sera hijo del nuevo Formulario
     newForm.appendChild(labelId);
-
-    //Creando el Div que sera hijo del nuevo Formulario
     newForm.appendChild(divElemento);
 };
+
 // AGREGANDO EVENTO CLIC A LOS BOTONES
 buttonCrear.onclick = () => {
     vericarTipoElemento();
@@ -160,6 +123,13 @@ buttonCrear.onclick = () => {
 buttonAddElemento.onclick = () => {
     if (nombreElemento.value != "" && tituloElemento.value != "") {
         let elemento = cmbElemento.value;
+        
+        // VALIDACIÓN DE ID REPETIDO 
+        let nuevoId = `id${nombreElemento.value}`;
+        if (document.getElementById(nuevoId)) {
+            alert(`Error: El ID "${nuevoId}" ya existe en el documento. Elija otro nombre.`);
+            return; // Detiene la ejecución si el ID existe
+        }
 
         if (elemento == "select") {
             newSelect();
@@ -173,11 +143,49 @@ buttonAddElemento.onclick = () => {
     }
 };
 
-// Agregando evento para el modal de bootstrap
+// VALIDACIÓN DEL FORMULARIO DINÁMICO
+buttonValidar.onclick = () => {
+    let elementos = newForm.elements;
+    let vacios = 0;
+
+    // Si no hay elementos
+    if (elementos.length === 0) {
+        alert("No hay controles para validar.");
+        return;
+    }
+
+    for (let i = 0; i < elementos.length; i++) {
+        let control = elementos[i];
+        
+        // Ignoramos botones si los hubiera
+        if (control.type === "button" || control.tagName === "SPAN") continue;
+
+        // Validación para Checkbox y Radio
+        if (control.type === "checkbox" || control.type === "radio") {
+            if (!control.checked) {
+                vacios++;
+            }
+        } 
+        // Validación para inputs normales, textarea y select
+        else {
+            if (control.value.trim() === "") {
+                vacios++;
+                control.style.borderColor = "red"; 
+            } else {
+                control.style.borderColor = ""; 
+            }
+        }
+    }
+
+    if (vacios > 0) {
+        alert(`Se encontraron ${vacios} controles vacíos o sin seleccionar.`);
+    } else {
+        alert("Todos los controles tienen información válida.");
+    }
+};
+
 document.getElementById("idModal").addEventListener("shown.bs.modal", () => {
-    // Limpiando campos para los nuevos elementos
     tituloElemento.value = "";
     nombreElemento.value = "";
-    // inicializando puntero en el campo del titulo para el control
     tituloElemento.focus();
 });
