@@ -1,6 +1,5 @@
 // Obteniendo la referencia de los elementos
 // por medio de arreglos asociativos
-// aqui se esta utilizando el atributo name de cada elemento
 const formulario = document.forms["frmRegistro"];
 const button = document.forms["frmRegistro"].elements["btnRegistro"];
 
@@ -8,89 +7,146 @@ const button = document.forms["frmRegistro"].elements["btnRegistro"];
 const modal = new bootstrap.Modal(document.getElementById("idModal"), {});
 
 // OBTENIENDO LA REFERENCIA DEL CUERPO DEL MODAL
-// PARA IMPRIMIR EL RESULTADO
 const bodyModal = document.getElementById("idBodyModal");
 
-// Recorrer el formulario
-const recorrerFormulario = function () {
-    let totText = 0;
-    let totRadio = 0;
-    let totCheck = 0;
-    let totDate = 0;
-    let totSelect = 0;
-    let totFile = 0;
-    let totPass = 0;
-    let totEmail = 0;
+// Función para validar y recorrer el formulario
+const validarFormulario = function () {
+    let errores = [];
+    let datosValidos = [];
 
-    // Recorriendo elementos del formulario
-    let elementos = formulario.elements;
-    let totalElementos = elementos.length;
+    // Validar campos vacíos 
+    const nombres = formulario.elements["idNombre"].value;
+    const apellidos = formulario.elements["idApellidos"].value;
+    const correo = formulario.elements["idCorreo"].value;
+    const password = formulario.elements["idPassword"].value;
+    const passwordRep = formulario.elements["idPasswordRepetir"].value;
+    const fechaNac = formulario.elements["idFechaNac"].value;
+    const pais = formulario.elements["idCmPais"].value;
 
-    for (let index = 0; index < totalElementos; index++) {
-        // Accediendo a cada hijo del formulario
-        let elemento = elementos[index];
-
-        // verificando el tipo de control en el formulario
-        let tipoElemento = elemento.type;
-        // verificando el tipo de nodo
-        let tipoNode = elemento.nodeName;
-        // Contabilizando el total de INPUT TYPE = TEXT
-        if (tipoElemento == "text" && tipoNode == "INPUT") {
-            console.log(elemento);
-            totText++;
-        }
-        // Contabilizando el total de INPUT TYPE = PASSWORD
-        else if (tipoElemento == "password" && tipoNode == "INPUT") {
-            console.log(elemento);
-            totPass++;
-        }
-        // Contabilizando el total de INPUT TYPE = EMAIL
-        else if (tipoElemento == "email" && tipoNode == "INPUT") {
-            console.log(elemento);
-            totEmail++;
-        }
-        // Contabilizando el total de INPUT TYPE = RADIO
-        else if (tipoElemento == "radio" && tipoNode == "INPUT") {
-            console.log(elemento);
-            totRadio++;
-        }
-        // Contabilizando el total de INPUT TYPE = CHECKBOX
-        else if (tipoElemento == "checkbox" && tipoNode == "INPUT") {
-            console.log(elemento);
-            totCheck++;
-        }
-        // Contabilizando el total de INPUT TYPE = FILE
-        else if (tipoElemento == "file" && tipoNode == "INPUT") {
-            console.log(elemento);
-            totFile++;
-        }
-        // Contabilizando el total de INPUT TYPE = CHECKBOX
-        else if (tipoElemento == "date" && tipoNode == "INPUT") {
-            console.log(elemento);
-            totDate++;
-        }
-        // Contabilizando el total de INPUT TYPE = EMAIL
-        else if (tipoNode == "SELECT") {
-            console.log(elemento);
-            totSelect++;
-        }
+    if (!nombres || !apellidos || !correo || !password || !passwordRep || !fechaNac) {
+        alert("Por favor, complete todos los campos de texto.");
+        return;
     }
-    let resultado = `
-        Total de input[type="text"] = ${totText}<br>
-        Total de input[type="password"] = ${totPass}<br>
-        Total de input[type="radio"] = ${totRadio}<br>
-        Total de input[type="checkbox"] = ${totCheck}<br>
-        Total de input[type="date"] = ${totDate}<br>
-        Total de input[type="email"] = ${totEmail}<br>
-        Total de select = ${totSelect}<br>
-    `;
+    datosValidos.push({ label: "Nombres", value: nombres });
+    datosValidos.push({ label: "Apellidos", value: apellidos });
 
-    bodyModal.innerHTML = resultado;
-    //Funcion que permite mostrar el modal de Bootstrap
-    //Esta funcion es definida por Bootstrap
+    //Validar Fecha de Nacimiento
+    let fechaActual = new Date();
+    let fechaIngresada = new Date(fechaNac);
+    if (fechaIngresada > fechaActual) {
+        errores.push("La fecha de nacimiento no puede ser futura.");
+    } else {
+        datosValidos.push({ label: "Fecha Nacimiento", value: fechaNac });
+    }
+
+    //Validar Correo
+    let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regexEmail.test(correo)) {
+        errores.push("El formato del correo electrónico no es válido.");
+    } else {
+        datosValidos.push({ label: "Correo", value: correo });
+    }
+
+    //Validar Contraseñas Iguales
+    if (password !== passwordRep) {
+        errores.push("Las contraseñas no coinciden.");
+    } else {
+        datosValidos.push({ label: "Contraseña", value: "******" }); // Por seguridad no mostramos la clave real
+    }
+
+    // Validar Intereses 
+    const interesesChecked = formulario.querySelectorAll('input[type="checkbox"]:checked');
+    if (interesesChecked.length === 0) {
+        errores.push("Debe seleccionar al menos un interés.");
+    } else {
+        let intereses = [];
+        interesesChecked.forEach(chk => {
+            // Buscamos el label para obtener el texto bonito
+            let label = formulario.querySelector(`label[for="${chk.id}"]`).textContent;
+            intereses.push(label);
+        });
+        datosValidos.push({ label: "Intereses", value: intereses.join(", ") });
+    }
+
+    //Validar Carrera
+    const carreraChecked = formulario.querySelector('input[name="idRdCarrera"]:checked');
+    if (!carreraChecked) {
+        errores.push("Debe seleccionar una carrera.");
+    } else {
+        let labelCarrera = formulario.querySelector(`label[for="${carreraChecked.id}"]`).textContent;
+        datosValidos.push({ label: "Carrera", value: labelCarrera });
+    }
+
+    // Validar País
+    // Asumiendo que el primer option de Seleccione una opcion tiene valor vacío o texto por defecto
+    if (pais === "Seleccione una opcion" || pais === "") {
+        errores.push("Debe seleccionar un país de origen.");
+    } else {
+        // Obtenemos el texto de la opción seleccionada, no el valor numérico
+        const paisTexto = formulario.elements["idCmPais"].options[formulario.elements["idCmPais"].selectedIndex].text;
+        datosValidos.push({ label: "País", value: paisTexto });
+    }
+
+    // MOSTRAR RESULTADOS O ERRORES
+    if (errores.length > 0) {
+        alert("Errores encontrados:\n" + errores.join("\n"));
+    } else {
+        crearTablaModal(datosValidos);
+    }
+};
+
+const crearTablaModal = function (datos) {
+    // Limpiamos el contenido previo del modal 
+    // O mejor, usamos while loop
+    while (bodyModal.firstChild) {
+        bodyModal.removeChild(bodyModal.firstChild);
+    }
+
+    // Crear elemento tabla
+    const table = document.createElement("table");
+    table.className = "table table-striped table-bordered";
+
+    // Crear encabezado tabla
+    const thead = document.createElement("thead");
+    const trHead = document.createElement("tr");
+    const th1 = document.createElement("th");
+    th1.textContent = "Campo";
+    const th2 = document.createElement("th");
+    th2.textContent = "Valor Ingresado";
+    
+    trHead.appendChild(th1);
+    trHead.appendChild(th2);
+    thead.appendChild(trHead);
+    table.appendChild(thead);
+
+    // Crear cuerpo tabla
+    const tbody = document.createElement("tbody");
+
+    datos.forEach(dato => {
+        const tr = document.createElement("tr");
+        
+        const tdLabel = document.createElement("td");
+        tdLabel.textContent = dato.label;
+        tdLabel.style.fontWeight = "bold";
+
+        const tdValue = document.createElement("td");
+        tdValue.textContent = dato.value;
+
+        tr.appendChild(tdLabel);
+        tr.appendChild(tdValue);
+        tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+
+    // Agregar la tabla construida al cuerpo del modal
+    bodyModal.appendChild(table);
+
+    // Mostrar modal
     modal.show();
 };
+
 // agregando eventos al boton
 button.onclick = () => {
-    recorrerFormulario();
+    validarFormulario();
 };
