@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="css\styles.css" rel="stylesheet" />
-    <link rel="icon" href="img/js.png" sizes="32x32" type="image/png" />
-    <title>Utilizando estructuras de control</title>
+    <link href="../css/styles.css" rel="stylesheet" />
+    <link rel="icon" href="../img/js.png" sizes="32x32" type="image/png" />
+    <title>Registro Académico - Guía 6</title>
 </head>
 
 <body>
@@ -17,7 +17,6 @@
             <a href="../index.html"
                 class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                 <img src="../img/js.png" alt="" width="32" height="32" class="me-2" />
-
                 <span class="fs-4">JavaScript</span>
             </a>
             <hr />
@@ -56,46 +55,12 @@
                             <h3>Datos de estudiantes</h3>
                             <form onsubmit="return false">
                                 <div class="row mb-3">
-                                    <label for="inputCarnet" class="col-sm-2 col-form-label">Carnet</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputCarnet" maxlength="5" />
+                                    <label for="inputCarnet" class="col-sm-4 col-form-label">Carnet (AB001)</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="inputCarnet" placeholder="Ej: AB001" />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputNombre" class="col-sm-2 col-form-label">Nombres</label>
-                                    <div class="col-sm-10">
+                                    <label for="inputNombre" class="col-sm-4 col-form-label">Nombres</label>
+                                    <div class="col-sm-8">
                                         <input type="text" class="form-control" id="inputNombre" />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputApellidos" class="col-sm-2 col-form-label">Apellidos</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputApellidos" />
-                                    </div>
-                                </div>
-
-                                <button type="button" class="btn btn-success" id="idBtnAgregarEstudiante">
-                                    <i class="bi bi-person-plus-fill" height="16" width="16"></i>
-                                    Registrar
-                                </button>
-                                <button type="button" class="btn btn-primary" id="idBtnMostrarEstudiantes">
-                                    <i class="bi bi-person-lines-fill"></i> Mostrar estudiantes
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-md-12 py-5">
-                        <h3>Estudiantes registrados</h3>
-                        <div id="idContainerEstudiantes">Ninguno</div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/registroAcademico.js" defer></script>
-</body>
-
-</html>
